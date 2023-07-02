@@ -7,6 +7,8 @@ variable "env" {
 variable "ec2_ami_id" {
   description = "Specify AWS AMI id for the instnces"
   type        = string
+  nullable    = false
+  default     = ""
 }
 
 
@@ -25,6 +27,8 @@ variable "ec2_hostname" {
 variable "ec2_key_name" {
   description = "Key name of the Key Pair to use for the instance"
   type        = string
+  nullable    = false
+  default     = ""
 }
 
 variable "ec2_vpc_security_group_ids" {
