@@ -20,9 +20,9 @@ data "aws_ami" "ami" {
 }
 
 resource "aws_instance" "this" {
-  ami                    = try(var.ec2_ami_id, data.aws_ami.ami.id)
+  ami                    = var.ec2_ami_id != "" ? var.ec2_ami_id : data.aws_ami.ami.id
   instance_type          = var.ec2_instance_type
-  key_name               = try(var.ec2_key_name, data.aws_key_pair.kp.key_name)
+  key_name               = var.ec2_key_name != "" ? var.ec2_key_name : data.aws_key_pair.kp.key_name
   vpc_security_group_ids = var.ec2_vpc_security_group_ids
   subnet_id              = var.ec2_subnet_id
   monitoring             = var.ec2_monitoring
