@@ -5,7 +5,7 @@ data "aws_key_pair" "kp" {
   }
   filter {
     name   = "tag:ENV"
-    values = [var.ENV]
+    values = [var.env]
   }
 }
 
