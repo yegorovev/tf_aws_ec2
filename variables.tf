@@ -1,3 +1,23 @@
+# Network state
+variable "net_remote_state_region" {
+  description = "Region for network remote state"
+  type        = string
+  nullable    = false
+}
+
+variable "net_backet_remote_state" {
+  description = "Bucket name for network remote state"
+  type        = string
+  nullable    = false
+}
+
+variable "net_key_remote_state" {
+  description = "Key name for network remote state"
+  type        = string
+  nullable    = false
+}
+
+# EC2
 variable "env" {
   description = "Specify environment"
   type        = string
@@ -18,6 +38,12 @@ variable "ec2_instance_type" {
   nullable    = false
 }
 
+variable "ec2_default_ami" {
+  description = "Default ami for EC2 instance"
+  type        = string
+  nullable    = false
+}
+
 variable "ec2_hostname" {
   description = "Instance hostname"
   type        = string
@@ -31,14 +57,14 @@ variable "ec2_key_name" {
   default     = ""
 }
 
-variable "ec2_vpc_security_group_ids" {
-  description = "List of security group IDs to associate with"
+variable "ec2_vpc_security_groups" {
+  description = "List of security group names to associate with"
   type        = list(string)
   nullable    = false
 }
 
-variable "ec2_subnet_id" {
-  description = "VPC Subnet ID to launch in"
+variable "ec2_subnet_name" {
+  description = "VPC Subnet name to launch in"
   type        = string
   nullable    = false
 }
@@ -49,3 +75,4 @@ variable "ec2_monitoring" {
   nullable    = false
   default     = false
 }
+
