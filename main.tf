@@ -9,6 +9,8 @@ data "terraform_remote_state" "network" {
 }
 
 data "aws_key_pair" "kp" {
+  count = var.ec2_key_name == "" ? 1 : 0
+
   filter {
     name   = "tag:ec2"
     values = [var.ec2_hostname]
@@ -20,6 +22,8 @@ data "aws_key_pair" "kp" {
 }
 
 data "aws_ami" "ami" {
+  count = var.ec2_ami_id == "" ? 1 : 0
+
   most_recent = true
   owners      = ["amazon"]
 
@@ -40,12 +44,13 @@ locals {
 }
 
 resource "aws_instance" "this" {
-  ami                    = var.ec2_ami_id != "" ? var.ec2_ami_id : data.aws_ami.ami.id
+  ami                    = var.ec2_ami_id != "" ? var.ec2_ami_id : data.aws_ami.ami[0].id
   instance_type          = var.ec2_instance_type
-  key_name               = var.ec2_key_name != "" ? var.ec2_key_name : data.aws_key_pair.kp.key_name
+  key_name               = var.ec2_key_name != "" ? var.ec2_key_name : data.aws_key_pair.kp[0].key_name
   vpc_security_group_ids = local.ec2_vpc_security_group_ids
   subnet_id              = local.ec2_subnet_id
   monitoring             = var.ec2_monitoring
+  source_dest_check      = var.ec2_source_dest_check
   tags = {
     Name = var.ec2_hostname
   }
