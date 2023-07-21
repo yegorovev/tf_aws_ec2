@@ -42,6 +42,7 @@ variable "ec2_default_ami" {
   description = "Default ami for EC2 instance"
   type        = string
   nullable    = false
+  default     = ""
 }
 
 variable "ec2_hostname" {
@@ -76,3 +77,9 @@ variable "ec2_monitoring" {
   default     = false
 }
 
+variable "ec2_source_dest_check" {
+  description = "Controls if traffic is routed to the instance when the destination address does not match the instance. (NAT or VPNs)"
+  type        = bool
+  nullable    = false
+  default     = true
+}
