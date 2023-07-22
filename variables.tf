@@ -83,3 +83,17 @@ variable "ec2_source_dest_check" {
   nullable    = false
   default     = true
 }
+
+variable "rt_name" {
+  description = "Route table name"
+  type        = string
+  nullable    = true
+  default     = null
+}
+
+variable "destination_cidr_block" {
+  description = "The destination CIDR block"
+  type        = string
+  nullable    = true
+  default     = null
+}
