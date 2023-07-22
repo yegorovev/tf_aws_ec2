@@ -38,8 +38,8 @@ locals {
     data.terraform_remote_state.network.outputs.subnets[*].subnets.tags.Name,
   [var.ec2_subnet_name])[0]
 
-  ec2_vpc_security_group_ids = matchkeys(data.terraform_remote_state.network.outputs.sg[*].sg.id,
-    data.terraform_remote_state.network.outputs.sg[*].sg.name,
+  ec2_vpc_security_group_ids = matchkeys(data.terraform_remote_state.network.outputs.security_groups[*].sg.id,
+    data.terraform_remote_state.network.outputs.security_groups[*].sg.name,
   var.ec2_vpc_security_groups)
 }
 
@@ -54,4 +54,20 @@ resource "aws_instance" "this" {
   tags = {
     Name = var.ec2_hostname
   }
+}
+
+# Route
+module "route" {
+  source = "git@github.com:yegorovev/tf_aws_route.git?ref=v1.0.1"
+  count  = var.rt_name != null ? 1 : 0
+
+  vpc_id                 = data.terraform_remote_state.network.outputs.vpc.vpc.id
+  rt_name                = var.rt_name
+  igw_name               = null
+  destination_cidr_block = var.destination_cidr_block
+  network_interface_id   = aws_instance.this.primary_network_interface_id
+
+  depends_on = [
+    aws_instance.this
+  ]
 }
